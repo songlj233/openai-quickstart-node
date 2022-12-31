@@ -13,7 +13,7 @@ export default async function (req, res) {
     temperature: 0.9,
     frequency_penalty: 0.5,
     presence_penalty: 0.2,
-    max_tokens: 500
+    max_tokens: 1000
   });
   res.status(200).json({ result: completion.data.choices[0].text });
 }
