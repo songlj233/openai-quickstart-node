@@ -29,12 +29,17 @@ export default async function (req, res) {
 }
 
 function record(req,res,completion) {
-  console.log("ip:", req.ip);
+  var ip1 = req.headers['x-forwarded-for'];
+  var ip2 = req.connection.remoteAddress;
+  console.log("ip1:", ip1);
+  console.log("ip2:", ip2);
+  var user_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  console.log("user_ip:", user_ip);
   console.log("body:", req.body);
   console.log("question:" + req.body.question);
   console.log("answer:", completion.data.choices[0].text);
   var  insertSql = 'INSERT INTO invoke_record(ip, prompt, completion) VALUES(?,?,?)';
-  var  insertParams = [req.ip, req.body.question, completion.data.choices[0].text];
+  var  insertParams = [user_ip, req.body.question, completion.data.choices[0].text];
 
   //增
   pool.query(insertSql, insertParams, function (err, result) {
